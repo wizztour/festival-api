@@ -6,36 +6,34 @@ app = Flask(__name__)
 
 festivals = [
     {
+        "title": "서울국제불꽃축제",
+        "location": "여의도 한강공원",
+        "date": "2025-10-05",
+        "description": "화려한 불꽃으로 가을 밤하늘을 수놓는 대표 행사",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Seoul_Fireworks.jpg"
+    },
+    {
+        "title": "한강몽땅 여름축제",
+        "location": "한강 전역",
+        "date": "2025-07-15 ~ 2025-08-20",
+        "description": "물놀이·영화·음악이 어우러지는 여름 대표 축제",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Hangang_Festival.jpg"
+    },
+    {
         "title": "서울장미축제",
         "location": "서울 중랑천",
-        "month": 5,
         "date": "2025-05-17 ~ 2025-05-26",
         "description": "수천 송이 장미가 흐드러진 서울의 봄",
         "image": "https://upload.wikimedia.org/wikipedia/commons/9/93/Seoul_Rose.jpg"
-    },
-    {
-        "title": "전주한지문화축제",
-        "location": "전주한옥마을",
-        "month": 5,
-        "date": "2025-05-03 ~ 2025-05-06",
-        "description": "전통 한지의 멋을 체험할 수 있는 전주 대표 축제",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Jeonju_Hanji.jpg"
-    },
-    {
-        "title": "진주남강유등축제",
-        "location": "진주 남강",
-        "month": 10,
-        "date": "2025-10-01 ~ 2025-10-14",
-        "description": "형형색색 유등이 수놓는 진주의 밤",
-        "image": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Jinju_Lantern.jpg"
     }
 ]
 
 @app.route("/api/festival")
 def get_festivals():
-    month = request.args.get("month", type=int)
+    month = request.args.get("month")
     if month:
-        return jsonify([f for f in festivals if f["month"] == month])
+        filtered = [f for f in festivals if f["date"].startswith(f"2025-{month.zfill(2)}")]
+        return jsonify(filtered)
     return jsonify(festivals)
 
 if __name__ == "__main__":
